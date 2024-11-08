@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <!-- Monitor -->
+  <rect x="12" y="10" width="40" height="30" rx="2" ry="2" fill="black" />
+  
+  <!-- Screen -->
+  <rect x="16" y="14" width="32" height="22" fill="white" />
+  
+  <!-- Stand -->
+  <rect x="28" y="42" width="8" height="4" fill="black" />
+  
+  <!-- Base -->
+  <rect x="22" y="46" width="20" height="4" fill="black" />
+  
+  <!-- Keyboard -->
+  <rect x="16" y="52" width="32" height="6" fill="black" />
+</svg>
+

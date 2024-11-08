@@ -1,0 +1,10 @@
+<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <path d="M100 20C55 20 20 55 20 100s35 80 80 80s80-35 80-80s-35-80-80-80z" fill="#ff9f9f"/>
+  <path d="M100 30c-38.66 0-70 31.34-70 70s31.34 70 70 70s70-31.34 70-70s-31.34-70-70-70zm0 120c-27.614 0-50-22.386-50-50s22.386-50 50-50s50 22.386 50 50s-22.386 50-50 50z" fill="#ff7575"/>
+  <text x="70" y="90" font-family="monospace" font-size="8" fill="#333">
+    <tspan x="70" dy="0">01001100</tspan>
+    <tspan x="70" dy="10">10100111</tspan>
+    <tspan x="70" dy="10">01001100</tspan>
+    <tspan x="70" dy="10">11100101</tspan>
+  </text>
+</svg>

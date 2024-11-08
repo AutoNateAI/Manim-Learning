@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 400">
+  <!-- Cape -->
+  <path d="M150 80 Q220 100 240 200 L150 200 L60 200 Q80 100 150 80" 
+        fill="#4B8BBE" class="cape"/>
+  
+  <!-- Body - Made to look like an IDE window -->
+  <rect x="90" y="120" width="120" height="140" 
+        fill="#1E1E1E" rx="10" class="body"/>
+  
+  <!-- Code lines on body -->
+  <path d="M100 150 L180 150" stroke="#FFD43B" stroke-width="3"/>
+  <path d="M100 170 L160 170" stroke="#4B8BBE" stroke-width="3"/>
+  <path d="M100 190 L170 190" stroke="#FFD43B" stroke-width="3"/>
+  
+  <!-- Head -->
+  <circle cx="150" cy="90" r="40" fill="#40e0d0" class="head"/>
+  
+  <!-- Smart Glasses -->
+  <rect x="125" y="80" width="50" height="20" rx="5" 
+        fill="none" stroke="#1E1E1E" stroke-width="3"/>
+  <path d="M125 90 L115 85" stroke="#1E1E1E" stroke-width="2"/>
+  <path d="M175 90 L185 85" stroke="#1E1E1E" stroke-width="2"/>
+  
+  <!-- Eyes behind glasses -->
+  <circle cx="135" cy="90" r="5" fill="#1E1E1E" class="eye"/>
+  <circle cx="165" cy="90" r="5" fill="#1E1E1E" class="eye"/>
+  
+  <!-- Coder Hat with 'KODA' -->
+  <path d="M110 50 L190 50 L190 30 L110 30 Z" fill="#306998"/>
+  <rect x="105" y="50" width="90" height="10" fill="#306998"/>
+  <!-- Letters -->
+  <text x="120" y="45" fill="white" font-family="monospace" font-size="14" font-weight="bold">KODA</text>
+  
+  <!-- Arms with tech gadgets -->
+  <path d="M90 140 L60 170" stroke="#40e0d0" stroke-width="20" stroke-linecap="round"/>
+  <path d="M210 140 L240 170" stroke="#40e0d0" stroke-width="20" stroke-linecap="round"/>
+  
+  <!-- Laptop/tablet in hand -->
+  <rect x="30" y="160" width="30" height="25" fill="#306998" rx="2"/>
+  <rect x="32" y="162" width="26" height="20" fill="#1E1E1E"/>
+  <path d="M33 172 L45 172" stroke="#4B8BBE" stroke-width="1"/>
+  <path d="M33 175 L42 175" stroke="#FFD43B" stroke-width="1"/>
+  
+  <!-- Power bands on arms -->
+  <circle cx="60" cy="170" r="8" fill="#FFD43B"/>
+  <circle cx="240" cy="170" r="8" fill="#FFD43B"/>
+  
+  <!-- Legs with tech boots -->
+  <path d="M110 260 L100 320" stroke="#40e0d0" stroke-width="20" stroke-linecap="round"/>
+  <path d="M190 260 L200 320" stroke="#40e0d0" stroke-width="20" stroke-linecap="round"/>
+  
+  <!-- Boot details -->
+  <rect x="85" y="310" width="30" height="20" fill="#306998" rx="5"/>
+  <rect x="185" y="310" width="30" height="20" fill="#306998" rx="5"/>
+  
+  <!-- Python logo on chest -->
+  <path d="M135 220 Q150 210 165 220 Q150 230 135 220" 
+        fill="#FFD43B" stroke="#4B8BBE" stroke-width="2"/>
+  <circle cx="143" cy="217" r="2" fill="#1E1E1E"/>
+  <circle cx="157" cy="217" r="2" fill="#1E1E1E"/>
+  
+  <!-- Binary particles around -->
+  <text x="70" y="100" fill="#4B8BBE" font-family="monospace" font-size="10">01</text>
+  <text x="210" y="120" fill="#4B8BBE" font-family="monospace" font-size="10">10</text>
+  <text x="90" y="200" fill="#4B8BBE" font-family="monospace" font-size="10">11</text>
+  <text x="200" y="180" fill="#4B8BBE" font-family="monospace" font-size="10">00</text>
+</svg>
