@@ -1,4 +1,5 @@
 from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 from typing import Dict, List, Optional
 from pydantic import BaseModel
 from ai_engine import generate_description_openai
@@ -9,6 +10,15 @@ app = FastAPI(
     title="AutoNate AI - Video Generator",
     description="Generates Videos Using NLP",
     version="1.0.0"
+)
+
+# Add CORSMiddleware to the application
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Allows all origins in dev mode
+    allow_credentials=True,
+    allow_methods=["*"],  # Allows all methods
+    allow_headers=["*"],  # Allows all headers
 )
 
 ######### START OF REAL MODELS --- DELETE ABOVE MODELS AFTERWARDS ##########
