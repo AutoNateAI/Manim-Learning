@@ -7,9 +7,10 @@ from models import DescriptionResponse
 load_dotenv()
 
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
+client = OpenAI(api_key=OPENAI_API_KEY)
+
 
 def generate_description_openai(description, video_type):
-    client = OpenAI(api_key=OPENAI_API_KEY)
 
     response = client.chat.completions.create(
         model="gpt-4o-2024-08-06",
@@ -78,7 +79,7 @@ def generate_description_openai(description, video_type):
         response_format={
             "type": "json_schema",
             "json_schema": {
-                "name": "post_extraction_schema",
+                "name": "generate_description_openai",
                 "schema": {
                     "type": "object",
                     "properties": {
@@ -102,11 +103,177 @@ def generate_description_openai(description, video_type):
 
     return data_obj
 
+
+def generate_screenplay_openai(title, description):
+
+    system_prompt = """
+
+    Create a screenplay for a 30-45 second Instagram reel video based on the title and context provided. Focus on making it an engaging SVG animated voiceover scene, with detailed visual descriptions.
+
+    The animation should use the math animation library Manim to create smooth and creative interactions between entities. Graphically illustrate the scenes with descriptive language, focusing on vibrant interactions that bring out the main idea of the reel. Describe both the entities and the background details vividly to make them come alive.
+
+    # Steps
+
+    1. Read the provided title and context, and identify the main message and theme of the screenplay.
+    2. Write a detailed screenplay with a clear narrative arc that fits into a 30-45 second timeline.
+    3. Detail every key scene and moment in the animation:
+    - Describe what entities are in the scene and how they move, interact, and change.
+    - Include clear visual imagery to show how objects are animated and how they should appear.
+    - Write the voiceover script along with cues for which part of the animation the lines correspond to.
+    4. Make the experience engaging—describe each piece of the action with vivid vocabulary, capturing the essence of interaction, movement, and emotion.
+
+    # Output Format
+
+    The output should be a screenplay with three major sections for each segment within the 30-45 second reel:
+
+    - **Scene Description**: Describe the main entities, the background, and how the visual elements are animated.
+    - **Entity Interactions**: Explain how the entities interact with each other at this point in time, including any animations or transformations.
+    - **Voiceover**: Write the dialogue or narration that corresponds to the current scene.
+
+    Ensure the total screenplay length fits comfortably within the 30-45 second runtime, with concise yet vivid visualization and engaging storytelling along each step.
+
+    # Example 
+
+    ### Input
+    - **Title**: "The Power of Consistency"
+    - **Context**: The video is about the idea that small actions repeated consistently lead to big results over time.
+
+    ### Output
+    #### Scene 1 - Starting Small
+    - **Scene Description**: The screen opens with a soft panoramic view of a blank graph, starting from zero. Small dots begin appearing on the graph, each one glowing faintly as it lands—these dots represent "small consistent actions." The background is a gradient from dark blue to light blue, giving a calm, early morning atmosphere.
+    - **Entity Interactions**: One dot slowly bounces onto the graph, leaving an expanding ripple effect that highlights its importance. Several more dots start bouncing in next to the first, generating ripples that overlap with each other.
+    - **Voiceover**: "All big changes start small. Just one small action, consistently done over time..."
+
+    #### Scene 2 - Consistency Builds Trajectory
+    - **Scene Description**: The camera zooms out, and we see rows of small arrows pointing up, representing an increasing trend. The graph’s background shifts to warmer hues—orange and yellow—indicating growth. The dots now begin connecting to each other, creating a linear path that points steadily upwards.
+    - **Entity Interactions**: An arrow sweeps across, connecting the dots with smooth, curving animations that light up as it travels. The line grows larger while moving forward, emphasizing the theme of progression.
+    - **Voiceover**: "...connect them together, and suddenly you see your trajectory changing for the better."
+
+    #### Scene 3 - Compounding Effects
+    - **Scene Description**: The screen pulls back again, revealing a larger graph where the line shoots upward more dramatically. Animated sparkles surround the line, adding an energetic sense of achievement. The colors shift to bright gold, signifying success.
+    - **Entity Interactions**: The growing line transforms into a rising curve—its motion becomes rapid and bold as it continues upward, emphasizing momentum from the compounding effect. The dots begin to accelerate and merge into a unified glow at the peak of the curve.
+    - **Voiceover**: "Over time, consistency takes you on a journey that delivers impact far beyond what was imaginable."
+
+    Final Ending: The graph transforms into a golden shining arrow pointing at the words "Consistency is Key," which emerge in a bright cursive font.
+
+    # Notes
+
+    - This screenplay should be delivered with enough description for an animator to clearly visualize the scenes, including details about how color, shape, pacing, and interaction all play a role in delivery.
+    - Utilize energetic vocabulary to make the video exciting and memorable, capturing the feeling of progress, growth, and success.
+    - Ensure animations feel human-like in fluidity, and focus on highlighting growth, change, and moments of culmination.
+
+    """
+
+    response = client.chat.completions.create(
+        model="gpt-4o-2024-08-06",
+        messages=[
+            {
+                "role": "system",
+                "content": f"""
+                {system_prompt}
+
+                Return the information in the following JSON structure:
+                
+                {{
+                    "scenes": "List<Screenplay Scenes>",
+                }}
+                """
+            },
+            {
+                "role": "user",
+                "content": f"description: {description}\nTitle: {title} effect."
+            }
+        ],
+        response_format={
+            "type": "json_schema",
+            "json_schema": {
+                "name": "generate_screenplay_openai",
+                "schema": {
+                    "type": "object",
+                    "properties": {
+                        "scenes": {"type": "array",
+                                    "description": "The list of scenes covered in the generated screenplay.",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                        "descriptive_background": {
+                                            "type": "string",
+                                            "description": "Very graphic language describing the background for the scene, knowing that the background will be generated as an svg."
+                                        },
+                                        "descriptive_scene_entities": {
+                                            "type": "array",
+                                            "description": "Very graphic language describing the entities in the scene",
+                                            "items": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "name": {
+                                                        "type": "string",
+                                                        "description": "the name of the entity"
+                                                    },
+                                                    "description": {
+                                                        "type": "string",
+                                                        "description": "Very graphic language describing the entity in the scene, knowing that the entity will be generated as an svg."
+                                                    }
+                                                }
+                                            }
+                                        },
+                                        "descriptive_scene_entities_interaction": {
+                                            "type": "string",
+                                            "description": "Very graphic language describing the interactions between entities in the scene."
+                                        },
+                                        "voiceover": {
+                                            "type": "string",
+                                            "description": "The voice over for the scene. It should go hand and hand with the animation and the entities."
+                                        }
+                                    },
+                                },
+                        },
+                    },
+                    "additionalProperties": False
+                }
+            }
+        }
+    )
+
+    # Get the json back from OpenAI in string format
+    str_json = response.choices[0].message.content
+
+    # Convert it to a Python object
+    data_obj = json.loads(str_json)
+
+    # Add the current time for when the data was scraped
+    data_obj["time_scraped"] = datetime.now().isoformat()
+
+    return data_obj
+
+
+import json
+
+def write_pretty_json(json_data, output_file):
+    """
+    Write Python dictionary to a file as pretty JSON.
+    
+    Args:
+        json_data (dict): Python dictionary to be written as JSON
+        output_file (str): Path to the output file
+    """
+    # Write to file with pretty formatting
+    with open(output_file, 'w', encoding='utf-8') as f:
+        json.dump(json_data, f, indent=4, ensure_ascii=False)
+
+    
+
 if __name__ == "__main__":
     import pprint
     # Example Usage
     video_type = "Entertainment + Education"
     description = "A young black boy learning to code in the hood and uses the knowledge to program his mind for success."
-    print("Starting AI Description and Title Generator🚀/n")
-    json_output = generate_description_openai(description, video_type)
-    pprint.pprint(json_output)
+    # print("Starting AI Description and Title Generator🚀/n")
+    # json_output = generate_description_openai(description, video_type)
+
+    description = "Ever wonder how determination can code its way to success? Dive into the vibrant story of a young black boy in the hood who discovered the keyboard to his dreams! Watch as animations showcase his journey—starting from humble lines of code to building the software of his future—against an energetic backdrop full of grit and creativity. By the end, you'll be inspired to program your mind for success, championing innovation in the most unexpected places!"
+    title = "Coding Dreams: Transforming Hood Hustle Into Tech Triumph"
+    print("Starting AI Screenplay Generator🚀/n")
+    json_output = generate_screenplay_openai(title, description)
+    write_pretty_json(json_output, 'output.json')
+    print("Done!\n")
