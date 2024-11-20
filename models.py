@@ -28,3 +28,26 @@ class Scene(BaseModel):
 class ScreenplayResponse(BaseModel):
     scenes: List[Scene]
     time_scraped: datetime
+
+class SceneEntityForSVG(BaseModel):
+    name: str
+    description: str
+
+class SceneForSVG(BaseModel):
+    descriptive_background: str
+    descriptive_scene_entities: List[SceneEntityForSVG]
+    scene_number: int
+
+class SVGGenerationRequest(BaseModel):
+    scenes: List[SceneForSVG]
+
+class SVGAsset(BaseModel):
+    svg_code: str
+    scene_number: int
+    filename: str
+    name: str  # Added name field
+    type: str  # To distinguish between background and entity SVGs
+
+class SVGGenerationResponse(BaseModel):
+    assets: List[SVGAsset]
+    time_generated: datetime

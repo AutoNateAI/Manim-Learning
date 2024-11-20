@@ -2,7 +2,8 @@ from openai import OpenAI
 from dotenv import load_dotenv
 import os, json
 from datetime import datetime
-from models import DescriptionResponse
+from models import SceneForSVG, SVGAsset
+from typing import List
 
 load_dotenv()
 
@@ -245,6 +246,69 @@ def generate_screenplay_openai(title, description):
     data_obj["time_scraped"] = datetime.now().isoformat()
 
     return data_obj
+
+
+def generate_background_svg(description: str, scene_number: int) -> SVGAsset:
+    """Generate an SVG for a scene background based on the description."""
+    # TODO: Implement actual SVG generation logic
+    svg_code = f'''
+    <svg viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg">
+        <rect width="800" height="600" fill="#f0f0f0"/>
+        <text x="400" y="300" text-anchor="middle">Background Scene {scene_number}</text>
+    </svg>
+    '''
+    
+    return SVGAsset(
+        svg_code=svg_code,
+        scene_number=scene_number,
+        filename=f'background_scene_{scene_number}.svg',
+        name=f'Scene {scene_number} Background',
+        type='background'
+    )
+
+def generate_entity_svg(entity_description: dict, scene_number: int, entity_number: int) -> SVGAsset:
+    """Generate an SVG for a scene entity based on its description."""
+    # TODO: Implement actual SVG generation logic
+    svg_code = f'''
+    <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="200" cy="200" r="150" fill="#e0e0e0"/>
+        <text x="200" y="200" text-anchor="middle">{entity_description['name']}</text>
+    </svg>
+    '''
+    
+    return SVGAsset(
+        svg_code=svg_code,
+        scene_number=scene_number,
+        filename=f'entity_{scene_number}_{entity_number}.svg',
+        name=entity_description['name'],
+        type='entity'
+    )
+
+def generate_svgs(scenes: List[SceneForSVG]) -> List[SVGAsset]:
+    """
+    Generate all SVGs for the video scenes.
+    This includes backgrounds and entities for each scene.
+    """
+    all_assets = []
+    
+    for scene in scenes:
+        # Generate background SVG
+        background_svg = generate_background_svg(
+            scene.descriptive_background,
+            scene.scene_number
+        )
+        all_assets.append(background_svg)
+        
+        # Generate SVGs for each entity in the scene
+        for idx, entity in enumerate(scene.descriptive_scene_entities):
+            entity_svg = generate_entity_svg(
+                {"name": entity.name, "description": entity.description},
+                scene.scene_number,
+                idx + 1
+            )
+            all_assets.append(entity_svg)
+    
+    return all_assets
 
 
 import json
