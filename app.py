@@ -3,8 +3,10 @@ from fastapi.middleware.cors import CORSMiddleware
 from typing import Dict, List, Optional
 from pydantic import BaseModel
 from ai_engine import generate_description_openai
-from models import DescriptionResponse, DescriptionRequest
+from models import DescriptionResponse, DescriptionRequest, ScreenplayRequest, ScreenplayResponse
 import uvicorn
+import json
+
 
 app = FastAPI(
     title="AutoNate AI - Video Generator",
@@ -36,6 +38,31 @@ async def generate_description(request: DescriptionRequest):
         return result
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
+    
+
+@app.post("/generate-screenplay/", response_model=ScreenplayResponse)
+async def generate_screenplay(request: ScreenplayRequest):
+    """Generate a screenplay using the stored JSON file"""
+    try:
+        # Read the stored screenplay from JSON file
+        with open('generated_screenplay.json', 'r') as f:
+            screenplay_data = json.load(f)
+        return screenplay_data
+    except FileNotFoundError:
+        raise HTTPException(
+            status_code=404, 
+            detail="Generated screenplay file not found"
+        )
+    except json.JSONDecodeError:
+        raise HTTPException(
+            status_code=500, 
+            detail="Error decoding screenplay data"
+        )
+    except Exception as e:
+        raise HTTPException(
+            status_code=500, 
+            detail=str(e)
+        )
 
 
 

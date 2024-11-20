@@ -1,11 +1,30 @@
-from datetime import datetime
 from pydantic import BaseModel
-
-class DescriptionResponse(BaseModel):
-    description: str
-    title: str
-    time_scraped: datetime
+from typing import List, Optional
+from datetime import datetime
 
 class DescriptionRequest(BaseModel):
     description: str
     video_type: str
+
+class DescriptionResponse(BaseModel):
+    title: str
+    description: str
+    time_scraped: datetime
+
+class ScreenplayRequest(BaseModel):
+    title: str
+    description: str
+
+class SceneEntity(BaseModel):
+    name: str
+    description: str
+
+class Scene(BaseModel):
+    descriptive_background: str
+    descriptive_scene_entities: List[SceneEntity]
+    descriptive_scene_entities_interaction: str
+    voiceover: str
+
+class ScreenplayResponse(BaseModel):
+    scenes: List[Scene]
+    time_scraped: datetime
