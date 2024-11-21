@@ -61,3 +61,11 @@ class ManimScriptRequest(BaseModel):
 class ManimScriptResponse(BaseModel):
     manim_script: str
     time_generated: datetime
+
+class VideoGenerationRequest(BaseModel):
+    script: str
+    title: str
+
+class VideoGenerationResponse(BaseModel):
+    video_url: str
+    time_generated: datetime

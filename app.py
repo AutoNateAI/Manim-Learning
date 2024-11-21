@@ -3,7 +3,8 @@ from fastapi.middleware.cors import CORSMiddleware
 from typing import Dict, List, Optional
 from pydantic import BaseModel
 from ai_engine import generate_description_openai, generate_manim_script_openai
-from models import DescriptionResponse, DescriptionRequest, ManimScriptRequest, ManimScriptResponse, ScreenplayRequest, ScreenplayResponse, SVGGenerationRequest, SVGGenerationResponse
+from manim_video_gen import generate_video_with_voiceover_9x16
+from models import DescriptionResponse, DescriptionRequest, ManimScriptRequest, ManimScriptResponse, ScreenplayRequest, ScreenplayResponse, SVGGenerationRequest, SVGGenerationResponse, VideoGenerationRequest, VideoGenerationResponse
 from ai_engine import generate_svgs
 import uvicorn
 import json, random, datetime
@@ -158,6 +159,27 @@ async def generate_manim_script(request: ManimScriptRequest):
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
+
+# Add this new endpoint
+@app.post("/generate-video-9x16/", response_model=VideoGenerationResponse)
+async def generate_video(request: VideoGenerationRequest):
+    """Generate a 9:16 video using manim script"""
+    print(request)
+    try:
+        video_url = generate_video_with_voiceover_9x16(
+            script=request.script,
+            title=request.title
+        )
+        
+        return VideoGenerationResponse(
+            video_url=video_url,
+            time_generated="2024-11-17T00:51:31.450198"
+        )
+    except Exception as e:
+        raise HTTPException(
+            status_code=500,
+            detail=f"Error generating video: {str(e)}"
+        )
 
 
 # Configuration and startup
