@@ -51,3 +51,13 @@ class SVGAsset(BaseModel):
 class SVGGenerationResponse(BaseModel):
     assets: List[SVGAsset]
     time_generated: datetime
+
+class ManimScriptRequest(BaseModel):
+    title: str
+    description: str
+    screenplay: ScreenplayResponse
+    svg_assets: SVGGenerationResponse
+
+class ManimScriptResponse(BaseModel):
+    manim_script: str
+    time_generated: datetime

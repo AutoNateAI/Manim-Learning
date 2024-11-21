@@ -2,8 +2,8 @@ from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from typing import Dict, List, Optional
 from pydantic import BaseModel
-from ai_engine import generate_description_openai
-from models import DescriptionResponse, DescriptionRequest, ScreenplayRequest, ScreenplayResponse, SVGGenerationRequest, SVGGenerationResponse
+from ai_engine import generate_description_openai, generate_manim_script_openai
+from models import DescriptionResponse, DescriptionRequest, ManimScriptRequest, ManimScriptResponse, ScreenplayRequest, ScreenplayResponse, SVGGenerationRequest, SVGGenerationResponse
 from ai_engine import generate_svgs
 import uvicorn
 import json, random, datetime
@@ -135,6 +135,24 @@ async def generate_svg_assets(request: SVGGenerationRequest):
         # Return the response with generated assets
         return SVGGenerationResponse(
             assets=svg_assets,
+            time_generated="2024-11-17T00:51:31.450198"
+        )
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+    
+@app.post("/generate-manim-script/", response_model=ManimScriptResponse)
+async def generate_manim_script(request: ManimScriptRequest):
+    """Generate a Manim script based on the video content"""
+    try:
+        manim_script = generate_manim_script_openai(
+            title=request.title,
+            description=request.description,
+            screenplay=request.screenplay.dict(),
+            svg_assets=request.svg_assets.dict()
+        )
+        
+        return ManimScriptResponse(
+            manim_script=manim_script,
             time_generated="2024-11-17T00:51:31.450198"
         )
     except Exception as e:

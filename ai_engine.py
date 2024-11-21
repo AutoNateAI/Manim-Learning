@@ -310,6 +310,32 @@ def generate_svgs(scenes: List[SceneForSVG]) -> List[SVGAsset]:
     
     return all_assets
 
+def generate_manim_script_openai(title: str, description: str, screenplay: dict, svg_assets: dict) -> str:
+    """
+    Generates a Manim script using OpenAI based on the video content.
+    This is currently stubbed for development.
+    """
+    # TODO: Implement actual OpenAI call
+    return f"""from manim import *
+
+class {title.replace(" ", "")}(Scene):
+    def construct(self):
+        # Set up the scene
+        self.camera.background_color = "#000000"
+        
+        # Create title
+        title = Text("{title}")
+        self.play(Write(title))
+        self.wait(1)
+        self.play(FadeOut(title))
+        
+        # Scene content will go here
+        # Generated from screenplay: {len(screenplay.get('scenes', []))} scenes
+        # With {len(svg_assets.get('assets', []))} SVG assets
+        
+        # End scene
+        self.wait(1)"""
+
 
 import json
 
